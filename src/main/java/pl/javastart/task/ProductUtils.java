@@ -3,56 +3,60 @@ package pl.javastart.task;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
+import java.util.Objects;
 
 public class ProductUtils {
 
-    static BigDecimal getSumOfAllProducts(List<Products> productsList, List<CurrenciesAgainstEuro> currenciesList) {
-        BigDecimal sum = new BigDecimal(0);
-        for (Products products : productsList) {
-            BigDecimal euPrice = getEuroPrice(products, currenciesList);
-            sum = sum.add(euPrice);
-        }
-        return sum;
-    }
-
-    private static BigDecimal getEuroPrice(Products product, List<CurrenciesAgainstEuro> currenciesList) {
-        return product.getPrice().divide(findCurrency(product.getCurrency(), currenciesList), 16, RoundingMode.HALF_UP);
-    }
-
-    static BigDecimal getAveragePriceOfAllProducts(List<Products> productsList, List<CurrenciesAgainstEuro> currenciesList) {
-        BigDecimal numberOfProducts = new BigDecimal(productsList.size());
-        BigDecimal allProdPrice = getSumOfAllProducts(productsList, currenciesList);
-        return allProdPrice.divide(numberOfProducts, 16, RoundingMode.HALF_UP);
-    }
-
-    static BigDecimal getMostExpensiveProductPrice(List<Products> productsList, List<CurrenciesAgainstEuro> currenciesList) {
-        BigDecimal mostExpensive = new BigDecimal(0);
-        for (Products product : productsList) {
-            BigDecimal euPrice = getEuroPrice(product, currenciesList);
-            if (mostExpensive.compareTo(euPrice) < 0) {
-                mostExpensive = euPrice;
+    static BigDecimal getSumOfAllProducts(List<Product> productsList) {
+        if (!productsList.isEmpty()) {
+            BigDecimal sum = new BigDecimal(0);
+            for (Product product : productsList) {
+                sum = sum.add(product.getPrice());
             }
+            return sum;
         }
-        return mostExpensive;
+        return null;
     }
 
-    static BigDecimal getCheapestProductPrice(List<Products> productsList, List<CurrenciesAgainstEuro> currenciesList) {
-        BigDecimal cheapest = productsList.get(0).getPrice();
-        for (Products product : productsList) {
-            BigDecimal euPrice = getEuroPrice(product, currenciesList);
-            if (cheapest.compareTo(euPrice) > 0) {
-                cheapest = euPrice;
-            }
+    static BigDecimal getAveragePriceOfAllProducts(List<Product> productsList) {
+        if (!productsList.isEmpty()) {
+            BigDecimal numberOfProducts = new BigDecimal(productsList.size());
+            return Objects.requireNonNull(getSumOfAllProducts(productsList)).divide(numberOfProducts, 16, RoundingMode.HALF_UP);
         }
-        return cheapest;
+        return null;
     }
 
-    private static BigDecimal findCurrency(String productCurrency, List<CurrenciesAgainstEuro> caeList) {
-        for (CurrenciesAgainstEuro currency : caeList) {
-            if (productCurrency.equals(currency.getCurrency())) {
-                return currency.getConversationRate();
+    static String getMostExpensiveProductInfo(List<Product> productsList) {
+        if (!productsList.isEmpty()) {
+            BigDecimal mostExpensive = new BigDecimal(0);
+            Product prod = new Product("---", new BigDecimal("0"), "---");
+            for (Product product : productsList) {
+                if (mostExpensive.compareTo(product.getPrice()) < 0) {
+                    mostExpensive = product.getPrice();
+                    prod = product;
+                }
             }
+            return "Najdroższy produkt: " + prod.getName()
+                   + ", Cena: " + prod.getPrice()
+                   + ", Waluta: " + prod.getCurrency();
         }
-        return new BigDecimal(0);
+        return "Coś poszło nie tak";
+    }
+
+    static String getCheapestProductInfo(List<Product> productsList) {
+        if (!productsList.isEmpty()) {
+            BigDecimal cheapest = productsList.get(0).getPrice();
+            Product prod = new Product("---", new BigDecimal("0"), "---");
+            for (Product product : productsList) {
+                if (cheapest.compareTo(product.getPrice()) > 0) {
+                    cheapest = product.getPrice();
+                    prod = product;
+                }
+            }
+            return "Najtańszy produkt: " + prod.getName()
+                   + " Cena: " + prod.getPrice()
+                   + ", Waluta: " + prod.getCurrency();
+        }
+        return "Coś poszło nie tak";
     }
 }

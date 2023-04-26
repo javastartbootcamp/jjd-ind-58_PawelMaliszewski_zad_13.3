@@ -2,12 +2,12 @@ package pl.javastart.task;
 
 import java.math.BigDecimal;
 
-public class Products {
+public class Product {
     private String name;
     private BigDecimal price;
     private String currency;
 
-    public Products(String name, BigDecimal price, String currency) {
+    public Product(String name, BigDecimal price, String currency) {
         this.name = name;
         this.price = price;
         this.currency = currency;

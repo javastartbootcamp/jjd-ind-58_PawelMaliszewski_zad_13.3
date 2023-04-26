@@ -6,12 +6,15 @@ import java.util.List;
 public class  Main {
     public static void main(String[] args) throws FileNotFoundException {
 
-        List<CurrenciesAgainstEuro> currenciesAgainstEuroList =
+        List<CurrencyAgainstEuro> currenciesAgainstEuroList =
                 FileReader.createCurrenciesList("src\\main\\resources\\currencies.csv");
-        List<Products> productsList = FileReader.createProductsList("src\\main\\resources\\products.csv");
-        System.out.println(ProductUtils.getSumOfAllProducts(productsList, currenciesAgainstEuroList));
-        System.out.println(ProductUtils.getAveragePriceOfAllProducts(productsList, currenciesAgainstEuroList));
-        System.out.println(ProductUtils.getMostExpensiveProductPrice(productsList, currenciesAgainstEuroList));
-        System.out.println(ProductUtils.getCheapestProductPrice(productsList, currenciesAgainstEuroList));
+        List<Product> products =
+                FileReader.createProductsWithAmendedPricesInEuro(
+                        "src\\main\\resources\\products.csv", currenciesAgainstEuroList);
+
+        System.out.println("Suma wszystkich produktów: " + ProductUtils.getSumOfAllProducts(products));
+        System.out.println("Średnia wartość produktu: " + ProductUtils.getAveragePriceOfAllProducts(products));
+        System.out.println(ProductUtils.getMostExpensiveProductInfo(products));
+        System.out.println(ProductUtils.getCheapestProductInfo(products));
     }
 }
