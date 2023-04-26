@@ -26,7 +26,7 @@ public class ProductUtils {
         return null;
     }
 
-    static String getMostExpensiveProductInfo(List<Product> productsList) {
+    static Product getMostExpensiveProductInfo(List<Product> productsList) {
         if (!productsList.isEmpty()) {
             BigDecimal mostExpensive = new BigDecimal(0);
             Product prod = new Product("---", new BigDecimal("0"), "---");
@@ -36,14 +36,12 @@ public class ProductUtils {
                     prod = product;
                 }
             }
-            return "Najdroższy produkt: " + prod.getName()
-                   + ", Cena: " + prod.getPrice()
-                   + ", Waluta: " + prod.getCurrency();
+            return prod;
         }
-        return "Coś poszło nie tak";
+        return null;
     }
 
-    static String getCheapestProductInfo(List<Product> productsList) {
+    static Product getCheapestProductInfo(List<Product> productsList) {
         if (!productsList.isEmpty()) {
             BigDecimal cheapest = productsList.get(0).getPrice();
             Product prod = new Product("---", new BigDecimal("0"), "---");
@@ -53,10 +51,8 @@ public class ProductUtils {
                     prod = product;
                 }
             }
-            return "Najtańszy produkt: " + prod.getName()
-                   + " Cena: " + prod.getPrice()
-                   + ", Waluta: " + prod.getCurrency();
+            return prod;
         }
-        return "Coś poszło nie tak";
+        return null;
     }
 }

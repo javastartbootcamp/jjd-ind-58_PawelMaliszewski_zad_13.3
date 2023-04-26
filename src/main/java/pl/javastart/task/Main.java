@@ -14,7 +14,7 @@ public class  Main {
 
         System.out.println("Suma wszystkich produktów: " + ProductUtils.getSumOfAllProducts(products));
         System.out.println("Średnia wartość produktu: " + ProductUtils.getAveragePriceOfAllProducts(products));
-        System.out.println(ProductUtils.getMostExpensiveProductInfo(products));
-        System.out.println(ProductUtils.getCheapestProductInfo(products));
+        System.out.println("Najdroższy produkt: " + ProductUtils.getMostExpensiveProductInfo(products));
+        System.out.println("Najtańszy produkt: " + ProductUtils.getCheapestProductInfo(products));
     }
 }
